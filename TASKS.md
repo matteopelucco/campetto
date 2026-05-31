@@ -5,7 +5,7 @@
 ## Da fare — Sprint 1 (fondamenta)
 - [x] Schema Prisma: Giocatore, Squadra, Genitore
 - [x] Autenticazione admin (NextAuth.js)
-- [ ] Layout base con sidebar e navigazione
+- [x] Layout base con sidebar e navigazione
 - [ ] CRUD Giocatori (lista + form)
 - [ ] CRUD Squadre
 
