@@ -29,4 +29,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: {
     signIn: "/login",
   },
+  callbacks: {
+    authorized({ auth }) {
+      // Called by the proxy on every protected request.
+      // Return true to allow, false to redirect to signIn page.
+      return !!auth;
+    },
+  },
 });
