@@ -42,3 +42,9 @@ Nessuna area pubblica.
 
 ## UI
 Dark theme, moderno, ottimizzato desktop.
+
+## Regole di qualità
+- Ogni feature deve avere test corrispondenti in __tests__/
+- I test vanno scritti nella stessa sessione della feature
+- Un task non è "Fatto" finché i test non passano
+- La PR deve includere sia il codice che i test
