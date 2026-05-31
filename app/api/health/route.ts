@@ -1,9 +1,6 @@
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../../generated/prisma/client";
+import { prisma } from "../../lib/prisma";
 
 export async function GET() {
-  const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
-  const prisma = new PrismaClient({ adapter });
   try {
     await prisma.$queryRaw`SELECT 1`;
     return Response.json({
@@ -16,7 +13,5 @@ export async function GET() {
       { status: "error", database: "disconnected" },
       { status: 503 },
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }
