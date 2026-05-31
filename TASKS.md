@@ -7,7 +7,7 @@
 - [x] Autenticazione admin (NextAuth.js)
 - [x] Layout base con sidebar e navigazione
 - [ ] CRUD Giocatori (lista + form)
-- [ ] CRUD Squadre
+- [x] CRUD Squadre
 
 ## Da fare — Sprint 2
 - [ ] Visite mediche con semaforo scadenze
