@@ -18,12 +18,15 @@
 ## SDLC
 1. Leggi SPEC.md e TASKS.md prima di iniziare
 2. Implementa quanto indicato in TASKS.md
-3. Esegui npm run build e verifica che passi
-4. Commit + PR su GitHub con titolo descrittivo
-5. Non mergare autonomamente — aspetta approvazione
+3. Esegui npm run test e verifica che passi
+4. Esegui npm run build e verifica che passi
+5. Commit + PR su GitHub con titolo descrittivo
+6. Non mergare autonomamente — aspetta approvazione
 
 ## Comandi utili
 - npm run dev              → sviluppo locale
+- npm run test             → esegui test suite (Vitest)
+- npm run test:watch       → test in modalità watch
 - npm run build            → verifica build
 - npx prisma migrate dev   → nuova migration
 - npx prisma studio        → ispeziona DB

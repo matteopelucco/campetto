@@ -18,3 +18,4 @@
 - [x] Setup Next.js + Prisma + Neon + Vercel
 - [x] Hello World deploy verificato
 - [x] Verifica stack (Hello World + health check DB)
+- [x] Test suite Vitest + GitHub Actions CI
