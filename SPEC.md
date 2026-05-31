@@ -2,7 +2,7 @@
 
 ## Cos'è
 Gestionale web per squadre di calcio giovanile.
-Utente unico: il responsabile della squadra (Claudio).
+Utente amministrativo unico: il responsabile della squadra (Mister).
 
 ## Moduli
 
