@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/app/lib/prisma";
-import { sendInviteEmail } from "@/app/lib/email";
+import { sendInviteEmail, buildInviteLink } from "@/app/lib/email";
 import { randomBytes } from "crypto";
 
 export async function POST(req: Request) {
@@ -21,7 +21,11 @@ export async function POST(req: Request) {
     data: { token, email: body.email, expiresAt },
   });
 
-  await sendInviteEmail(body.email, token);
+  const emailSent = await sendInviteEmail(body.email, token);
+  const link = buildInviteLink(token);
 
-  return NextResponse.json({ success: true, email: body.email }, { status: 201 });
+  return NextResponse.json(
+    { success: true, email: body.email, emailSent, link },
+    { status: 201 },
+  );
 }

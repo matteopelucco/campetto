@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { IconEdit, IconTrash, IconPlus, IconX, IconMail } from "@tabler/icons-react";
+import { IconEdit, IconTrash, IconPlus, IconX, IconMail, IconCopy, IconCheck } from "@tabler/icons-react";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -55,6 +55,8 @@ export default function GiocatoriPage() {
   const [panel, setPanel] = useState<"form" | "invito">("form");
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviting, setInviting] = useState(false);
+  const [inviteLink, setInviteLink] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     if (!toast) return;
@@ -158,6 +160,7 @@ export default function GiocatoriPage() {
     e.preventDefault();
     if (!inviteEmail.includes("@")) { showToast("error", "Email non valida"); return; }
     setInviting(true);
+    setInviteLink(null);
     try {
       const res = await fetch("/api/inviti", {
         method: "POST",
@@ -165,10 +168,24 @@ export default function GiocatoriPage() {
         body: JSON.stringify({ email: inviteEmail }),
       });
       if (!res.ok) throw new Error(((await res.json()) as { error?: string }).error ?? "Errore");
-      showToast("success", `Invito inviato a ${inviteEmail}`);
-      setInviteEmail("");
+      const data = await res.json() as { emailSent: boolean; link: string; email: string };
+      if (data.emailSent) {
+        showToast("success", `Email inviata a ${data.email}`);
+        setInviteEmail("");
+      } else {
+        // Email service not configured — show the link for manual sharing
+        setInviteLink(data.link);
+        setInviteEmail("");
+      }
     } catch (err) { showToast("error", err instanceof Error ? err.message : "Errore"); }
     finally { setInviting(false); }
+  };
+
+  const handleCopyLink = async () => {
+    if (!inviteLink) return;
+    await navigator.clipboard.writeText(inviteLink);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const setG = (idx: 0 | 1, field: keyof GenitoreForm, val: string) =>
@@ -333,9 +350,33 @@ export default function GiocatoriPage() {
               </div>
               <button type="submit" disabled={inviting}
                 className="w-full flex items-center justify-center gap-2 rounded-lg bg-green-600 hover:bg-green-500 disabled:opacity-50 px-4 py-2.5 text-sm font-semibold text-white transition-colors">
-                {inviting ? "Invio…" : <><IconMail size={14} /> Invia invito</>}
+                {inviting ? "Generazione…" : <><IconMail size={14} /> Genera link invito</>}
               </button>
             </form>
+
+            {/* Fallback: link copiabile quando email non è configurata */}
+            {inviteLink && (
+              <div className="mt-4 rounded-lg border border-yellow-700/50 bg-yellow-950/30 p-3">
+                <p className="text-xs font-medium text-yellow-400 mb-2">
+                  ⚠️ Email non configurata — copia e condividi il link manualmente:
+                </p>
+                <div className="flex gap-2 items-center">
+                  <code className="flex-1 text-xs text-zinc-300 bg-zinc-900 rounded px-2 py-1.5 break-all">
+                    {inviteLink}
+                  </code>
+                  <button
+                    onClick={handleCopyLink}
+                    className="flex-shrink-0 p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition-colors"
+                    title="Copia link"
+                  >
+                    {copied ? <IconCheck size={14} className="text-green-400" /> : <IconCopy size={14} />}
+                  </button>
+                </div>
+                <p className="text-xs text-zinc-600 mt-2">
+                  Valido 48 ore. Per abilitare l&apos;invio automatico configura <code className="text-zinc-500">RESEND_API_KEY</code>.
+                </p>
+              </div>
+            )}
           </div>
         )}
       </div>
