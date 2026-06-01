@@ -9,33 +9,38 @@
 
 import { Resend } from "resend";
 
-const resend = process.env.RESEND_API_KEY
-  ? new Resend(process.env.RESEND_API_KEY)
-  : null;
+// NOTE: intentionally NOT a module-level const — reading process.env at call
+// time ensures the latest value is used after Vercel env var changes + redeploy.
+function getResend(): Resend | null {
+  return process.env.RESEND_API_KEY
+    ? new Resend(process.env.RESEND_API_KEY)
+    : null;
+}
 
-const FROM =
-  process.env.RESEND_FROM ?? "Campetto <noreply@campetto.app>";
+function getFrom(): string {
+  return process.env.RESEND_FROM ?? "Campetto <noreply@campetto.app>";
+}
 
-const BASE_URL = (process.env.NEXTAUTH_URL ?? "http://localhost:3000").replace(
-  /\/$/,
-  "",
-);
+function getBaseUrl(): string {
+  return (process.env.NEXTAUTH_URL ?? "http://localhost:3000").replace(/\/$/, "");
+}
 
 export function buildInviteLink(token: string): string {
-  return `${BASE_URL}/invito/${token}`;
+  return `${getBaseUrl()}/invito/${token}`;
 }
 
 export function isEmailConfigured(): boolean {
-  return resend !== null;
+  return Boolean(process.env.RESEND_API_KEY);
 }
 
 // ── Send invite link to parent ───────────────────────────────────────────────
-// Returns true if the email was actually sent, false if fallback (not configured).
+// Returns true if the email was actually sent, false if Resend is not configured.
 
 export async function sendInviteEmail(
   toEmail: string,
   token: string,
 ): Promise<boolean> {
+  const resend = getResend();
   const link = buildInviteLink(token);
 
   if (!resend) {
@@ -45,8 +50,8 @@ export async function sendInviteEmail(
     return false;
   }
 
-  await resend.emails.send({
-    from: FROM,
+  const { error } = await resend.emails.send({
+    from: getFrom(),
     to: toEmail,
     subject: "Completa l'iscrizione del tuo bambino — Campetto ⚽",
     html: `
@@ -64,6 +69,12 @@ export async function sendInviteEmail(
       </div>
     `,
   });
+
+  if (error) {
+    console.error("[EMAIL] Resend error:", error);
+    throw new Error(`Invio email fallito: ${error.message}`);
+  }
+
   return true;
 }
 
@@ -73,6 +84,7 @@ export async function sendAdminNotification(
   nomeGiocatore: string,
   emailGenitore: string,
 ): Promise<void> {
+  const resend = getResend();
   const adminEmail = process.env.ADMIN_EMAIL;
 
   if (!resend || !adminEmail) {
@@ -82,8 +94,8 @@ export async function sendAdminNotification(
     return;
   }
 
-  await resend.emails.send({
-    from: FROM,
+  const { error } = await resend.emails.send({
+    from: getFrom(),
     to: adminEmail,
     subject: `Nuova iscrizione: ${nomeGiocatore}`,
     html: `
@@ -98,4 +110,9 @@ export async function sendAdminNotification(
       </div>
     `,
   });
+
+  if (error) {
+    console.error("[EMAIL] Resend admin notification error:", error);
+    // Non-fatal: log only, don't throw
+  }
 }
