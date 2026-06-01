@@ -6,12 +6,17 @@ Utente amministrativo unico: il responsabile della squadra (Mister).
 
 ## Moduli
 
-### 1. Giocatori
+### 1.1 Giocatori
 Anagrafica completa dei bambini iscritti.
 Campi: nome, cognome, data nascita, codice fiscale,
 indirizzo, numero maglia, ruolo, note.
 Per ogni giocatore: fino a 2 contatti genitore
 (nome, telefono, email).
+
+### 1.2 Giocatori tramite invito via e-mail
+L'amministratore inserisce in un campo una mail (di un genitore) a cui inviare un link di iscrizione (link valido per sole 48 ore)
+Il genitore riceve la mail, clicca sul link e completa i dati anagrafici del bambino, che viene aggiunto all'elenco anagrafico.
+Ad inserimento completato, viene inviata una mail anche all'amministratore, come notifica.
 
 ### 2. Squadre
 Raggruppamento dei giocatori per categoria.
