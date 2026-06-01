@@ -3,10 +3,6 @@
 ## In corso
 
 ## Da fare — Sprint 1 (fondamenta)
-- [x] Schema Prisma: Giocatore, Squadra, Genitore
-- [x] Autenticazione admin (NextAuth.js)
-- [x] Layout base con sidebar e navigazione
-- [ ] CRUD Giocatori (lista + form)
 - [ ] CRUD Squadre
 
 ## Da fare — Sprint 2
@@ -19,3 +15,7 @@
 - [x] Hello World deploy verificato
 - [x] Verifica stack (Hello World + health check DB)
 - [x] Test suite Vitest + GitHub Actions CI
+- [x] Schema Prisma: Giocatore, Squadra, Genitore
+- [x] Autenticazione admin (NextAuth.js)
+- [x] Layout base con sidebar e navigazione
+- [x] CRUD Giocatori (lista + form + modulo link invito)
