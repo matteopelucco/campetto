@@ -1,5 +1,5 @@
 // Email utility — uses Resend when RESEND_API_KEY is set,
-// otherwise logs to console (useful for local dev without API key).
+// otherwise returns the link for manual sharing.
 //
 // Required environment variables:
 //   RESEND_API_KEY  – your Resend API key (https://resend.com)
@@ -21,19 +21,28 @@ const BASE_URL = (process.env.NEXTAUTH_URL ?? "http://localhost:3000").replace(
   "",
 );
 
+export function buildInviteLink(token: string): string {
+  return `${BASE_URL}/invito/${token}`;
+}
+
+export function isEmailConfigured(): boolean {
+  return resend !== null;
+}
+
 // ── Send invite link to parent ───────────────────────────────────────────────
+// Returns true if the email was actually sent, false if fallback (not configured).
 
 export async function sendInviteEmail(
   toEmail: string,
   token: string,
-): Promise<void> {
-  const link = `${BASE_URL}/invito/${token}`;
+): Promise<boolean> {
+  const link = buildInviteLink(token);
 
   if (!resend) {
-    console.log(
-      `[EMAIL] Invite link for ${toEmail}: ${link}`,
+    console.warn(
+      `[EMAIL] RESEND_API_KEY not set — invite link for ${toEmail}: ${link}`,
     );
-    return;
+    return false;
   }
 
   await resend.emails.send({
@@ -55,6 +64,7 @@ export async function sendInviteEmail(
       </div>
     `,
   });
+  return true;
 }
 
 // ── Notify admin of new registration ────────────────────────────────────────

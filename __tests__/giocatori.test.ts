@@ -26,8 +26,10 @@ vi.mock("@/app/lib/prisma", () => ({
 
 vi.mock("@/auth", () => ({ auth: vi.fn() }));
 vi.mock("@/app/lib/email", () => ({
-  sendInviteEmail: vi.fn().mockResolvedValue(undefined),
+  sendInviteEmail: vi.fn().mockResolvedValue(true),
   sendAdminNotification: vi.fn().mockResolvedValue(undefined),
+  buildInviteLink: vi.fn().mockReturnValue("http://localhost:3000/invito/abc123"),
+  isEmailConfigured: vi.fn().mockReturnValue(true),
 }));
 
 // ── Imports ───────────────────────────────────────────────────────────────────
