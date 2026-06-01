@@ -48,34 +48,34 @@ enum MetodoPagamento {
 }
 
 model Squadra {
-  id         Int        @id @default(autoincrement())
+  id         Int         @id @default(autoincrement())
   nome       String
   categoria  Categoria
   stagione   String
   allenatore String?
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
   giocatori  Giocatore[]
 }
 
 model Giocatore {
-  id             Int            @id @default(autoincrement())
-  nome           String
-  cognome        String
-  dataNascita    DateTime
-  codiceFiscale  String?
-  indirizzo      String?
-  numeroMaglia   Int?
-  ruolo          Ruolo?
-  note           String?
-  attivo         Boolean        @default(true)
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
-  squadraId      Int?
-  squadra        Squadra?       @relation(fields: [squadraId], references: [id])
-  genitori       Genitore[]
-  visiteMediche  VisitaMedica[]
-  pagamenti      Pagamento[]
+  id            Int            @id @default(autoincrement())
+  nome          String
+  cognome       String
+  dataNascita   DateTime
+  codiceFiscale String?
+  indirizzo     String?
+  numeroMaglia  Int?
+  ruolo         Ruolo?
+  note          String?
+  attivo        Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  squadraId     Int?
+  squadra       Squadra?       @relation(fields: [squadraId], references: [id])
+  genitori      Genitore[]
+  visiteMediche VisitaMedica[]
+  pagamenti     Pagamento[]
 }
 
 model Genitore {
@@ -88,7 +88,7 @@ model Genitore {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   giocatoreId Int
-  giocatore   Giocatore @relation(fields: [giocatoreId], references: [id])
+  giocatore   Giocatore @relation(fields: [giocatoreId], references: [id], onDelete: Cascade)
 }
 
 model VisitaMedica {
@@ -103,7 +103,7 @@ model VisitaMedica {
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
   giocatoreId  Int
-  giocatore    Giocatore   @relation(fields: [giocatoreId], references: [id])
+  giocatore    Giocatore   @relation(fields: [giocatoreId], references: [id], onDelete: Cascade)
 }
 
 model Pagamento {
@@ -118,5 +118,14 @@ model Pagamento {
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
   giocatoreId   Int
-  giocatore     Giocatore        @relation(fields: [giocatoreId], references: [id])
+  giocatore     Giocatore        @relation(fields: [giocatoreId], references: [id], onDelete: Cascade)
+}
+
+model InviteToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  email     String
+  usato     Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 }
