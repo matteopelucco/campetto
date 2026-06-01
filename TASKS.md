@@ -3,7 +3,11 @@
 ## In corso
 
 ## Da fare — Sprint 1 (fondamenta)
-- [ ] CRUD Squadre
+- [x] Schema Prisma: Giocatore, Squadra, Genitore
+- [x] Autenticazione admin (NextAuth.js)
+- [x] Layout base con sidebar e navigazione
+- [ ] CRUD Giocatori (lista + form)
+- [x] CRUD Squadre
 
 ## Da fare — Sprint 2
 - [ ] Visite mediche con semaforo scadenze
