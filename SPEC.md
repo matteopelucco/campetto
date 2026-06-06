@@ -33,6 +33,7 @@ Alert automatici: rosso <14gg, giallo <30gg, verde ok.
 Quote e rate per ogni giocatore.
 Stati: In attesa, Pagato, Scaduto, Annullato.
 Registrazione rapida pagamento ricevuto.
+Caricamento estratto conto in .csv, configurazione colonne, preview dei versamenti e associazione a quote da pagare.
 
 ### 5. Scadenzario
 Vista unificata visite + pagamenti in scadenza.

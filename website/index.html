@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FC Grantola — Società di calcio giovanile. Un ambiente sano, amicizia e passione per il calcio.">
+    <title>FC Grantola — Calcio Giovanile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ================================================================
+           RESET & VARIABILI
+           ================================================================ */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --g900: #0d3320;
+            --g700: #1a5c38;
+            --g500: #2d8653;
+            --g300: #52b788;
+            --g100: #d8f3dc;
+            --orange: #f4845f;
+            --yellow: #f9c74f;
+            --white: #ffffff;
+            --offwhite: #f8faf9;
+            --gray100: #f1f3f5;
+            --gray300: #dee2e6;
+            --gray500: #868e96;
+            --gray700: #495057;
+            --dark: #0d1117;
+            --fh: 'Montserrat', 'Arial Black', sans-serif;
+            --fb: 'Nunito', Arial, sans-serif;
+            --r: 16px;
+            --rl: 24px;
+            --sh: 0 4px 24px rgba(0,0,0,.10);
+            --shl: 0 12px 48px rgba(0,0,0,.20);
+            --t: .3s ease;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--fb);
+            color: var(--dark);
+            background: var(--offwhite);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        img { max-width: 100%; height: auto; display: block; }
+        a { color: inherit; text-decoration: none; }
+
+        /* ================================================================
+           TIPOGRAFIA COMUNE
+           ================================================================ */
+        h1, h2, h3, h4 { font-family: var(--fh); line-height: 1.15; }
+
+        .label {
+            display: inline-block;
+            font-family: var(--fh);
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--g500);
+            background: var(--g100);
+            padding: .3em .9em;
+            border-radius: 100px;
+            margin-bottom: 1rem;
+        }
+
+        .stitle {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 900;
+            color: var(--g900);
+            margin-bottom: 1rem;
+        }
+
+        .ssub {
+            font-size: 1.05rem;
+            color: var(--gray700);
+            line-height: 1.75;
+        }
+
+        /* ================================================================
+           NAVIGAZIONE
+           ================================================================ */
+        .nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 1.25rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background var(--t), box-shadow var(--t), padding var(--t);
+        }
+
+        .nav.scrolled {
+            background: rgba(255,255,255,.97);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 2px 20px rgba(0,0,0,.08);
+            padding: .8rem 2rem;
+        }
+
+        .logo { display: flex; align-items: center; gap: .75rem; }
+
+        .logo-ball {
+            width: 42px; height: 42px;
+            background: var(--g700);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem;
+            box-shadow: 0 3px 10px rgba(26,92,56,.35);
+            flex-shrink: 0;
+        }
+
+        .logo-name {
+            font-family: var(--fh);
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: var(--white);
+            transition: color var(--t);
+        }
+
+        .nav.scrolled .logo-name { color: var(--g900); }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: var(--fh);
+            font-weight: 600;
+            font-size: .88rem;
+            color: rgba(255,255,255,.88);
+            letter-spacing: .02em;
+            transition: color var(--t);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0; right: 0;
+            height: 2px;
+            background: var(--orange);
+            transform: scaleX(0);
+            transition: transform var(--t);
+            border-radius: 2px;
+        }
+
+        .nav-links a:hover::after { transform: scaleX(1); }
+        .nav.scrolled .nav-links a { color: var(--gray700); }
+        .nav.scrolled .nav-links a:hover { color: var(--g700); }
+
+        .nav-cta {
+            background: var(--orange) !important;
+            color: var(--white) !important;
+            padding: .5rem 1.4rem;
+            border-radius: 100px;
+            box-shadow: 0 4px 14px rgba(244,132,95,.45);
+        }
+
+        .nav-cta::after { display: none !important; }
+        .nav-cta:hover { opacity: .9; }
+
+        .burger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: .4rem;
+            z-index: 1001;
+        }
+
+        .burger span {
+            display: block; width: 24px; height: 2.5px;
+            background: white; border-radius: 2px;
+            transition: all var(--t);
+        }
+
+        .nav.scrolled .burger span { background: var(--g900); }
+
+        /* ================================================================
+           HERO
+           ================================================================ */
+        .hero {
+            position: relative;
+            height: 100dvh;
+            min-height: 620px;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+
+        .hero-bg video {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
+        /* Sfondo animato come fallback — rimane attivo se il video non carica */
+        .hero-anim {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 80%, rgba(42,139,83,.75) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 15%, rgba(13,51,32,.95) 0%, transparent 55%),
+                linear-gradient(135deg, #0d3320 0%, #1a5c38 40%, #2d8653 70%, #0d3320 100%);
+            background-size: 400% 400%;
+            animation: gShift 9s ease infinite;
+        }
+
+        @keyframes gShift {
+            0%, 100% { background-position: 0% 50%; }
+            50%       { background-position: 100% 50%; }
+        }
+
+        /* Righe campo (effetto erba) */
+        .hero-lines {
+            position: absolute;
+            inset: 0;
+            background-image: repeating-linear-gradient(
+                0deg,
+                transparent, transparent 58px,
+                rgba(255,255,255,.03) 58px,
+                rgba(255,255,255,.03) 60px
+            );
+            pointer-events: none;
+        }
+
+        /* Pallino mobile animato */
+        .hero-ball-float {
+            position: absolute;
+            font-size: 4rem;
+            opacity: .08;
+            animation: floatBall 12s ease-in-out infinite;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .hero-ball-float:nth-child(1) { top: 15%; left: 8%; animation-delay: 0s; }
+        .hero-ball-float:nth-child(2) { top: 65%; right: 10%; animation-delay: -4s; font-size: 3rem; }
+        .hero-ball-float:nth-child(3) { top: 40%; left: 75%; animation-delay: -7s; font-size: 5rem; }
+
+        @keyframes floatBall {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33%       { transform: translateY(-20px) rotate(30deg); }
+            66%       { transform: translateY(10px) rotate(-20deg); }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(0,0,0,.15) 0%,
+                rgba(0,0,0,.45) 50%,
+                rgba(0,0,0,.65) 100%
+            );
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: var(--white);
+            padding: 2rem;
+            max-width: 860px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            background: rgba(255,255,255,.12);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,.22);
+            padding: .45rem 1.3rem;
+            border-radius: 100px;
+            font-family: var(--fh);
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            animation: fadeUp .8s ease both;
+        }
+
+        .hero-title {
+            font-size: clamp(2.8rem, 8vw, 5.5rem);
+            font-weight: 900;
+            line-height: 1.04;
+            margin-bottom: 1.3rem;
+            text-shadow: 0 3px 24px rgba(0,0,0,.45);
+            animation: fadeUp .8s ease .2s both;
+        }
+
+        .hero-title em {
+            color: var(--yellow);
+            font-style: normal;
+            display: block;
+        }
+
+        .hero-sub {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            color: rgba(255,255,255,.85);
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            animation: fadeUp .8s ease .4s both;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeUp .8s ease .6s both;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: .6rem;
+            padding: .9rem 2.2rem;
+            border-radius: 100px;
+            font-family: var(--fh);
+            font-weight: 700;
+            font-size: .95rem;
+            cursor: pointer;
+            transition: transform var(--t), box-shadow var(--t), background var(--t);
+            border: none;
+        }
+
+        .btn:hover { transform: translateY(-3px); }
+
+        .btn-primary {
+            background: var(--orange);
+            color: var(--white);
+            box-shadow: 0 6px 24px rgba(244,132,95,.5);
+        }
+
+        .btn-primary:hover { box-shadow: 0 10px 32px rgba(244,132,95,.65); }
+
+        .btn-ghost {
+            background: rgba(255,255,255,.12);
+            color: var(--white);
+            border: 2px solid rgba(255,255,255,.35);
+            backdrop-filter: blur(8px);
+        }
+
+        .btn-ghost:hover { background: rgba(255,255,255,.22); }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 2.5rem; left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            color: rgba(255,255,255,.6);
+            font-family: var(--fh);
+            font-size: .72rem;
+            letter-spacing: .1em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .5rem;
+            animation: fadeIn 1s ease 1.4s both;
+        }
+
+        .scroll-hint .arr {
+            width: 22px; height: 22px;
+            border-right: 2px solid rgba(255,255,255,.55);
+            border-bottom: 2px solid rgba(255,255,255,.55);
+            transform: rotate(45deg);
+            animation: bounce 1.6s ease infinite;
+        }
+
+        /* ================================================================
+           STRISCIA STATISTICHE
+           ================================================================ */
+        .stats {
+            background: var(--g700);
+            padding: 2.5rem 2rem;
+        }
+
+        .stats-grid {
+            max-width: 960px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat { color: var(--white); }
+
+        .stat-n {
+            font-family: var(--fh);
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--yellow);
+            line-height: 1;
+        }
+
+        .stat-l {
+            font-size: .82rem;
+            color: rgba(255,255,255,.7);
+            margin-top: .35rem;
+            font-weight: 600;
+            letter-spacing: .03em;
+        }
+
+        /* ================================================================
+           SEZIONI COMUNI
+           ================================================================ */
+        section { padding: 6rem 2rem; }
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        /* ================================================================
+           CHI SIAMO
+           ================================================================ */
+        #chi-siamo { background: var(--white); }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .about-img-wrap { position: relative; }
+
+        .about-img {
+            width: 100%;
+            height: 500px;
+            border-radius: var(--rl);
+            overflow: hidden;
+        }
+
+        .img-ph {
+            width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 6rem;
+            /* Sostituire il div con <img src="img/squadra.jpg" alt="..."> */
+            background: linear-gradient(135deg, var(--g700) 0%, var(--g500) 60%, var(--g300) 100%);
+        }
+
+        /* Immagine reale: togli il div .img-ph e aggiungi:
+           <img src="img/squadra.jpg" alt="La squadra FC Grantola"
+                style="width:100%;height:100%;object-fit:cover"> */
+
+        .about-card {
+            position: absolute;
+            bottom: -1.5rem; right: -1.5rem;
+            background: var(--white);
+            border-radius: var(--r);
+            padding: 1.2rem 1.6rem;
+            box-shadow: var(--shl);
+            display: flex; align-items: center; gap: .8rem;
+        }
+
+        .about-card-icon {
+            width: 50px; height: 50px;
+            background: var(--g100);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .about-card-txt strong {
+            display: block;
+            font-family: var(--fh);
+            font-weight: 900;
+            font-size: 1.4rem;
+            color: var(--g700);
+            line-height: 1;
+        }
+
+        .about-card-txt span { font-size: .78rem; color: var(--gray500); }
+
+        .about-text p {
+            color: var(--gray700);
+            line-height: 1.8;
+            margin-bottom: 1.2rem;
+            font-size: 1.02rem;
+        }
+
+        .check-list {
+            display: flex;
+            flex-direction: column;
+            gap: .7rem;
+            margin-top: 2rem;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: .8rem;
+            font-weight: 600;
+            color: var(--g900);
+            font-size: .95rem;
+        }
+
+        .check-item::before {
+            content: '✓';
+            display: flex; align-items: center; justify-content: center;
+            width: 26px; height: 26px; min-width: 26px;
+            background: var(--g100);
+            color: var(--g700);
+            border-radius: 50%;
+            font-weight: 900;
+            font-size: .8rem;
+            margin-top: .05rem;
+        }
+
+        /* ================================================================
+           PERCHÉ ISCRIVERSI
+           ================================================================ */
+        #perche { background: var(--offwhite); }
+
+        .perche-head {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .perche-head .ssub { max-width: 560px; margin: 0 auto; }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 1.75rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--rl);
+            padding: 2.5rem 2rem;
+            box-shadow: var(--sh);
+            position: relative;
+            overflow: hidden;
+            transition: transform var(--t), box-shadow var(--t);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--accent, var(--g700));
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shl);
+        }
+
+        .card[data-c="green"]  { --accent: linear-gradient(90deg, var(--g700), var(--g300)); }
+        .card[data-c="orange"] { --accent: linear-gradient(90deg, var(--orange), var(--yellow)); }
+        .card[data-c="teal"]   { --accent: linear-gradient(90deg, #0096a0, #52b788); }
+        .card[data-c="violet"] { --accent: linear-gradient(90deg, #7c3aed, #a78bfa); }
+
+        .card-icon {
+            width: 62px; height: 62px;
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.9rem;
+            margin-bottom: 1.4rem;
+        }
+
+        .card[data-c="green"]  .card-icon { background: var(--g100); }
+        .card[data-c="orange"] .card-icon { background: #fff3ee; }
+        .card[data-c="teal"]   .card-icon { background: #e0f7fa; }
+        .card[data-c="violet"] .card-icon { background: #ede9fe; }
+
+        .card-title {
+            font-family: var(--fh);
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--g900);
+            margin-bottom: .7rem;
+        }
+
+        .card-text { color: var(--gray700); line-height: 1.75; font-size: .95rem; }
+
+        /* ================================================================
+           GALLERIA FOTO
+           ================================================================ */
+        #gallery {
+            background: var(--dark);
+            padding: 6rem 0;
+            overflow: hidden;
+        }
+
+        .gal-head {
+            text-align: center;
+            padding: 0 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .gal-head .label { background: rgba(255,255,255,.1); color: var(--g300); }
+        .gal-head .stitle { color: var(--white); }
+        .gal-head .ssub { color: rgba(255,255,255,.55); max-width: 500px; margin: 0 auto; }
+
+        .slideshow { position: relative; }
+
+        .track {
+            display: flex;
+            transition: transform .6s cubic-bezier(.25,.46,.45,.94);
+        }
+
+        .slide {
+            min-width: 100%;
+            position: relative;
+        }
+
+        .slide-inner {
+            height: 540px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide-inner img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
+        /* Placeholder colorato — sostituire con <img src="img/fotoN.jpg" alt="..."> */
+        .slide-ph {
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; gap: 1rem; font-size: 5rem;
+        }
+
+        .slide-ph span {
+            font-size: .85rem;
+            font-family: var(--fh); font-weight: 700;
+            color: rgba(255,255,255,.4);
+            letter-spacing: .1em; text-transform: uppercase;
+        }
+
+        .slide:nth-child(1) .slide-ph { background: linear-gradient(135deg, #0d3320, #1a5c38); }
+        .slide:nth-child(2) .slide-ph { background: linear-gradient(135deg, #1a3a4c, #0096a0); }
+        .slide:nth-child(3) .slide-ph { background: linear-gradient(135deg, #3d1a4c, #7c3aed); }
+        .slide:nth-child(4) .slide-ph { background: linear-gradient(135deg, #4c2a1a, #c0722b); }
+        .slide:nth-child(5) .slide-ph { background: linear-gradient(135deg, #1a2a4c, #3b82f6); }
+        .slide:nth-child(6) .slide-ph { background: linear-gradient(135deg, #3a1a1a, #dc2626); }
+
+        .slide-cap {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 3rem 3rem 2.2rem;
+            background: linear-gradient(transparent, rgba(0,0,0,.72));
+            color: var(--white);
+        }
+
+        .slide-cap h3 {
+            font-family: var(--fh);
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: .25rem;
+        }
+
+        .slide-cap p { font-size: .88rem; color: rgba(255,255,255,.72); }
+
+        .ss-btn {
+            position: absolute;
+            top: 50%; transform: translateY(-50%);
+            z-index: 10;
+            background: rgba(255,255,255,.13);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,.2);
+            color: white;
+            width: 52px; height: 52px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background var(--t), transform var(--t);
+        }
+
+        .ss-btn:hover { background: rgba(255,255,255,.28); transform: translateY(-50%) scale(1.08); }
+        .ss-btn.prev { left: 1.5rem; }
+        .ss-btn.next { right: 1.5rem; }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: .55rem;
+            padding: 1.75rem 0 .5rem;
+        }
+
+        .dot {
+            width: 8px; height: 8px;
+            border-radius: 100px;
+            background: rgba(255,255,255,.25);
+            cursor: pointer;
+            border: none;
+            transition: background var(--t), width var(--t);
+        }
+
+        .dot.on { background: var(--orange); width: 24px; }
+
+        /* ================================================================
+           VALORI (banner verde)
+           ================================================================ */
+        #valori {
+            background: var(--g700);
+            padding: 5.5rem 2rem;
+            text-align: center;
+        }
+
+        #valori .stitle { color: var(--white); font-size: clamp(2rem, 4vw, 2.8rem); }
+
+        .quote {
+            font-size: clamp(1.05rem, 2.5vw, 1.35rem);
+            color: rgba(255,255,255,.82);
+            line-height: 1.8;
+            font-style: italic;
+            font-family: var(--fh);
+            font-weight: 600;
+            max-width: 720px;
+            margin: 1.5rem auto 2.5rem;
+        }
+
+        .tags {
+            display: flex; flex-wrap: wrap;
+            gap: .75rem; justify-content: center;
+        }
+
+        .tag {
+            background: rgba(255,255,255,.1);
+            border: 1.5px solid rgba(255,255,255,.18);
+            color: var(--white);
+            padding: .55rem 1.4rem;
+            border-radius: 100px;
+            font-family: var(--fh);
+            font-size: .88rem;
+            font-weight: 700;
+            letter-spacing: .04em;
+        }
+
+        /* ================================================================
+           CONTATTI
+           ================================================================ */
+        #contatti { background: var(--white); }
+
+        .contatti-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 5rem;
+            align-items: start;
+        }
+
+        .contact-info h3 {
+            font-family: var(--fh);
+            font-size: 1.35rem; font-weight: 800;
+            color: var(--g900);
+            margin-bottom: 1.5rem;
+        }
+
+        .clist { display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2.5rem; }
+
+        .citem { display: flex; align-items: flex-start; gap: 1rem; }
+
+        .cicon {
+            width: 44px; height: 44px; min-width: 44px;
+            background: var(--g100);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .ctext strong {
+            display: block;
+            font-weight: 700; color: var(--g900);
+            font-size: .82rem; margin-bottom: .2rem;
+        }
+
+        .ctext span { color: var(--gray700); font-size: .95rem; }
+
+        .socials { display: flex; gap: .75rem; }
+
+        .soc-btn {
+            display: flex; align-items: center; gap: .45rem;
+            padding: .55rem 1.2rem;
+            border-radius: 100px;
+            font-family: var(--fh); font-size: .82rem; font-weight: 700;
+            background: var(--gray100); color: var(--gray700);
+            transition: background var(--t), color var(--t);
+        }
+
+        .soc-btn:hover { background: var(--g100); color: var(--g700); }
+
+        .form-box {
+            background: var(--offwhite);
+            border-radius: var(--rl);
+            padding: 2.5rem;
+        }
+
+        .form-box h3 {
+            font-family: var(--fh);
+            font-size: 1.35rem; font-weight: 800;
+            color: var(--g900); margin-bottom: .4rem;
+        }
+
+        .form-box > p { color: var(--gray500); font-size: .88rem; margin-bottom: 2rem; }
+
+        .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+        .fg { margin-bottom: 1.2rem; }
+
+        .fg label {
+            display: block;
+            font-family: var(--fh); font-weight: 700;
+            font-size: .76rem; letter-spacing: .06em;
+            text-transform: uppercase; color: var(--gray700);
+            margin-bottom: .45rem;
+        }
+
+        .fg input, .fg textarea, .fg select {
+            width: 100%;
+            padding: .82rem 1rem;
+            border: 2px solid var(--gray300);
+            border-radius: 12px;
+            font-family: var(--fb); font-size: .95rem;
+            color: var(--dark); background: var(--white);
+            transition: border-color var(--t), box-shadow var(--t);
+            outline: none;
+            appearance: none;
+        }
+
+        .fg input:focus, .fg textarea:focus, .fg select:focus {
+            border-color: var(--g500);
+            box-shadow: 0 0 0 3px rgba(45,134,83,.14);
+        }
+
+        .fg textarea { resize: vertical; min-height: 110px; }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: var(--g700);
+            color: var(--white);
+            border: none; border-radius: 100px;
+            font-family: var(--fh); font-weight: 700; font-size: 1rem;
+            cursor: pointer;
+            transition: background var(--t), transform var(--t), box-shadow var(--t);
+            box-shadow: 0 4px 16px rgba(26,92,56,.3);
+        }
+
+        .btn-submit:hover {
+            background: var(--g900);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(26,92,56,.42);
+        }
+
+        .form-ok {
+            display: none;
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+        }
+
+        .form-ok .ok-ico { font-size: 3rem; margin-bottom: 1rem; }
+
+        .form-ok h4 {
+            font-family: var(--fh); font-size: 1.3rem;
+            color: var(--g700); margin-bottom: .5rem;
+        }
+
+        .form-ok p { color: var(--gray700); font-size: .95rem; }
+
+        /* ================================================================
+           FOOTER
+           ================================================================ */
+        footer {
+            background: var(--dark);
+            color: rgba(255,255,255,.55);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .f-logo {
+            font-family: var(--fh); font-weight: 900;
+            font-size: 1.5rem; color: var(--white);
+            margin-bottom: .6rem;
+        }
+
+        .f-tag { font-size: .88rem; margin-bottom: 2rem; }
+
+        .f-links {
+            display: flex; justify-content: center;
+            gap: 2rem; flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .f-links a {
+            font-size: .82rem;
+            color: rgba(255,255,255,.45);
+            transition: color var(--t);
+        }
+
+        .f-links a:hover { color: var(--white); }
+        hr.fdiv { border: none; border-top: 1px solid rgba(255,255,255,.07); margin-bottom: 1.5rem; }
+        .f-copy { font-size: .77rem; color: rgba(255,255,255,.28); }
+
+        /* ================================================================
+           ANIMAZIONI
+           ================================================================ */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(28px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; } to { opacity: 1; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: rotate(45deg) translateY(0); }
+            50%       { transform: rotate(45deg) translateY(7px); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity .7s ease, transform .7s ease;
+        }
+
+        .reveal.vis { opacity: 1; transform: translateY(0); }
+
+        /* ================================================================
+           RESPONSIVE
+           ================================================================ */
+        @media (max-width: 920px) {
+            .about-grid, .contatti-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            .about-card { right: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: fixed; inset: 0;
+                background: rgba(13,51,32,.97);
+                flex-direction: column;
+                justify-content: center; align-items: center;
+                gap: 2.5rem;
+                z-index: 999;
+            }
+
+            .nav-links.open { display: flex; }
+            .nav-links a { font-size: 1.4rem !important; color: var(--white) !important; }
+            .nav-links a::after { display: none; }
+            .nav-cta { background: none !important; box-shadow: none !important; }
+            .burger { display: flex; }
+
+            .slide-inner { height: 400px; }
+            .row2 { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 480px) {
+            section { padding: 4rem 1.25rem; }
+            .hero-content { padding: 1.25rem; }
+            .form-box { padding: 1.75rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVIGAZIONE
+     ============================================================ -->
+<nav class="nav" id="nav">
+    <div class="logo">
+        <div class="logo-ball">⚽</div>
+        <span class="logo-name">FC Grantola</span>
+    </div>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="#chi-siamo">Chi siamo</a></li>
+        <li><a href="#perche">Perché noi</a></li>
+        <li><a href="#gallery">Foto</a></li>
+        <li><a href="#contatti" class="nav-cta">Iscriviti</a></li>
+    </ul>
+    <div class="burger" id="burger" role="button" aria-label="Menu">
+        <span></span><span></span><span></span>
+    </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero" id="home">
+    <div class="hero-bg">
+        <!--
+            VIDEO DI SFONDO
+            Carica un tuo video nella cartella "video/" col nome "hero.mp4".
+            Suggerimento: bambini che giocano a calcio, campo verde, 20-40 secondi in loop.
+            Se non hai il video, lo sfondo animato verde è già attivo come fallback.
+        -->
+        <video autoplay muted loop playsinline>
+            <source src="video/hero.mp4" type="video/mp4">
+        </video>
+        <div class="hero-anim"></div>
+        <div class="hero-lines"></div>
+        <div class="hero-ball-float">⚽</div>
+        <div class="hero-ball-float">⚽</div>
+        <div class="hero-ball-float">⚽</div>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <div class="hero-badge">⚽ Calcio Giovanile · Grantola</div>
+        <h1 class="hero-title">
+            Il calcio che
+            <em>cambia la vita</em>
+        </h1>
+        <p class="hero-sub">
+            Squadra, amicizia, crescita. Alla FC Grantola ogni bambino<br>
+            scopre il piacere del gioco, il valore del rispetto<br>
+            e la magia di un sogno condiviso.
+        </p>
+        <div class="hero-actions">
+            <a href="#contatti" class="btn btn-primary">Iscriviti ora</a>
+            <a href="#chi-siamo" class="btn btn-ghost">Scopri la squadra</a>
+        </div>
+    </div>
+    <div class="scroll-hint">
+        <span>SCORRI</span>
+        <div class="arr"></div>
+    </div>
+</section>
+
+<!-- ============================================================
+     STATISTICHE
+     ============================================================ -->
+<div class="stats">
+    <div class="stats-grid">
+        <div class="stat reveal">
+            <div class="stat-n">50+</div>
+            <div class="stat-l">Bambini iscritti</div>
+        </div>
+        <div class="stat reveal" style="transition-delay:.1s">
+            <div class="stat-n">15</div>
+            <div class="stat-l">Anni di storia</div>
+        </div>
+        <div class="stat reveal" style="transition-delay:.2s">
+            <div class="stat-n">8</div>
+            <div class="stat-l">Allenatori qualificati</div>
+        </div>
+        <div class="stat reveal" style="transition-delay:.3s">
+            <div class="stat-n">100%</div>
+            <div class="stat-l">Passione vera</div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     CHI SIAMO
+     ============================================================ -->
+<section id="chi-siamo">
+    <div class="container">
+        <div class="about-grid">
+            <div class="about-img-wrap reveal">
+                <div class="about-img">
+                    <!--
+                        FOTO SQUADRA
+                        Sostituire il div .img-ph con:
+                        <img src="img/squadra.jpg" alt="La squadra FC Grantola"
+                             style="width:100%;height:100%;object-fit:cover">
+                    -->
+                    <div class="img-ph">⚽</div>
+                </div>
+                <div class="about-card">
+                    <div class="about-card-icon">🏆</div>
+                    <div class="about-card-txt">
+                        <strong>Dal 2009</strong>
+                        <span>nel cuore di Grantola</span>
+                    </div>
+                </div>
+            </div>
+            <div class="about-text reveal" style="transition-delay:.15s">
+                <span class="label">Chi siamo</span>
+                <h2 class="stitle">Una famiglia unita dalla passione per il calcio</h2>
+                <p>
+                    FC Grantola è nata da un sogno semplice: offrire ai bambini del territorio un luogo
+                    sicuro dove crescere, imparare e divertirsi attraverso il calcio.
+                </p>
+                <p>
+                    Da oltre quindici anni accompagniamo i nostri ragazzi in ogni stagione — con allenatori
+                    qualificati, strutture adeguate e, soprattutto, un'atmosfera familiare che mette il
+                    benessere di ogni bambino al primo posto.
+                </p>
+                <p>
+                    Non si tratta solo di calciare un pallone: si tratta di formare persone, costruire
+                    amicizie e trasmettere valori che durano tutta la vita.
+                </p>
+                <div class="check-list">
+                    <div class="check-item">Allenatori UEFA qualificati con formazione continua</div>
+                    <div class="check-item">Categorie dai 5 ai 14 anni — Pulcini, Esordienti, Giovanissimi</div>
+                    <div class="check-item">Campo omologato a Grantola con spogliatoi adeguati</div>
+                    <div class="check-item">Approccio inclusivo: nessuno viene lasciato indietro</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     PERCHÉ ISCRIVERSI
+     ============================================================ -->
+<section id="perche">
+    <div class="container">
+        <div class="perche-head reveal">
+            <span class="label">Perché sceglierci</span>
+            <h2 class="stitle">Tutto quello che uno sport<br>può dare a tuo figlio</h2>
+            <p class="ssub">
+                Lo sport è il miglior investimento che puoi fare per il futuro del tuo bambino.
+                Ecco perché il calcio — e FC Grantola in particolare — fa davvero la differenza.
+            </p>
+        </div>
+        <div class="cards">
+            <div class="card reveal" data-c="green">
+                <div class="card-icon">💪</div>
+                <h3 class="card-title">Salute e movimento</h3>
+                <p class="card-text">
+                    Il calcio sviluppa coordinazione, resistenza e agilità in modo naturale e divertente.
+                    I bambini attivi dormono meglio, hanno più energia e meno rischi di sovrappeso.
+                    Qui corrono, saltano e sorridono — ogni allenamento.
+                </p>
+            </div>
+            <div class="card reveal" data-c="orange" style="transition-delay:.1s">
+                <div class="card-icon">🤝</div>
+                <h3 class="card-title">Amicizie per la vita</h3>
+                <p class="card-text">
+                    Lo spogliatoio è una seconda famiglia. I legami che nascono in campo — fatti di
+                    complicità, rispetto e sostegno reciproco — spesso durano decenni. Il tuo bambino
+                    crescerà circondato da compagni veri.
+                </p>
+            </div>
+            <div class="card reveal" data-c="teal" style="transition-delay:.2s">
+                <div class="card-icon">🧠</div>
+                <h3 class="card-title">Disciplina e carattere</h3>
+                <p class="card-text">
+                    Rispettare l'allenatore, imparare dai propri errori, saper perdere con dignità:
+                    il campo insegna valori che nessun libro di testo può trasmettere.
+                    I bambini sportivi sono più resilienti, concentrati e responsabili.
+                </p>
+            </div>
+            <div class="card reveal" data-c="violet" style="transition-delay:.3s">
+                <div class="card-icon">🛡️</div>
+                <h3 class="card-title">Un ambiente sicuro e sereno</h3>
+                <p class="card-text">
+                    La sicurezza viene prima di tutto. I nostri allenatori sono certificati, i campi
+                    monitorati e i genitori sempre benvenuti. Ogni bambino ha spazio per esprimersi
+                    senza pressioni, nei propri tempi e con la propria personalità.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     GALLERIA FOTO
+     ============================================================ -->
+<section id="gallery">
+    <div class="gal-head reveal">
+        <span class="label">I nostri momenti</span>
+        <h2 class="stitle">Il campo racconta la nostra storia</h2>
+        <p class="ssub">Sorrisi, gol, abbracci e sudore. Questi siamo noi.</p>
+    </div>
+    <div class="slideshow" id="ss">
+        <div class="track" id="track">
+
+            <div class="slide">
+                <div class="slide-inner">
+                    <!--
+                        Sostituire .slide-ph con <img src="img/foto1.jpg" alt="...">
+                        per tutte le slide. La foto deve essere almeno 1400×600 px.
+                    -->
+                    <div class="slide-ph">⚽<span>Foto allenamento</span></div>
+                </div>
+                <div class="slide-cap">
+                    <h3>In campo, ogni giorno</h3>
+                    <p>Gli allenamenti sono il cuore pulsante della nostra società</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-inner">
+                    <div class="slide-ph">🏆<span>Giorno di partita</span></div>
+                </div>
+                <div class="slide-cap">
+                    <h3>Emozioni in campo</h3>
+                    <p>Il giorno della partita è sempre speciale per i nostri ragazzi</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-inner">
+                    <div class="slide-ph">👦<span>Foto di squadra</span></div>
+                </div>
+                <div class="slide-cap">
+                    <h3>La nostra squadra</h3>
+                    <p>Tante facce, un cuore solo</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-inner">
+                    <div class="slide-ph">🥇<span>Premiazione</span></div>
+                </div>
+                <div class="slide-cap">
+                    <h3>Orgoglio e vittoria</h3>
+                    <p>Ogni traguardo raggiunto è un ricordo che dura per sempre</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-inner">
+                    <div class="slide-ph">🎉<span>Festa fine stagione</span></div>
+                </div>
+                <div class="slide-cap">
+                    <h3>Fine stagione</h3>
+                    <p>Il momento più atteso per festeggiare insieme</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="slide-inner">
+                    <div class="slide-ph">🌟<span>I nostri allenatori</span></div>
+                </div>
+                <div class="slide-cap">
+                    <h3>Il team dietro la squadra</h3>
+                    <p>Tecnici appassionati e qualificati guidano ogni passo</p>
+                </div>
+            </div>
+
+        </div>
+        <button class="ss-btn prev" id="prevBtn" aria-label="Foto precedente">&#8592;</button>
+        <button class="ss-btn next" id="nextBtn" aria-label="Foto successiva">&#8594;</button>
+    </div>
+    <div class="dots" id="dots"></div>
+</section>
+
+<!-- ============================================================
+     VALORI
+     ============================================================ -->
+<section id="valori">
+    <div class="container" style="max-width:880px;text-align:center">
+        <h2 class="stitle reveal">I nostri valori</h2>
+        <p class="quote reveal" style="transition-delay:.1s">
+            "Non alleniamo solo calciatori. Alleniamo bambini a diventare brave persone,
+            buoni compagni, cittadini responsabili.
+            Il pallone è il mezzo — non il fine."
+        </p>
+        <div class="tags reveal" style="transition-delay:.2s">
+            <span class="tag">⚽ Passione</span>
+            <span class="tag">🤝 Rispetto</span>
+            <span class="tag">💪 Impegno</span>
+            <span class="tag">🌱 Crescita</span>
+            <span class="tag">🏡 Famiglia</span>
+            <span class="tag">😄 Divertimento</span>
+            <span class="tag">🛡️ Sicurezza</span>
+            <span class="tag">🌟 Inclusione</span>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     CONTATTI
+     ============================================================ -->
+<section id="contatti">
+    <div class="container">
+        <div class="contatti-grid">
+
+            <div class="contact-info reveal">
+                <span class="label">Contatti</span>
+                <h2 class="stitle">Inizia il percorso<br>di tuo figlio</h2>
+                <p class="ssub" style="margin-bottom:2.2rem">
+                    Compila il modulo, chiamaci o vieni a trovarci direttamente al campo.
+                    Saremo felici di risponderti.
+                </p>
+                <h3>Come trovarci</h3>
+                <div class="clist">
+                    <div class="citem">
+                        <div class="cicon">📍</div>
+                        <div class="ctext">
+                            <strong>Campo sportivo</strong>
+                            <span>Via dello Sport, Grantola (VA)</span>
+                        </div>
+                    </div>
+                    <div class="citem">
+                        <div class="cicon">📞</div>
+                        <div class="ctext">
+                            <strong>Telefono / WhatsApp</strong>
+                            <span>+39 333 000 0000</span>
+                        </div>
+                    </div>
+                    <div class="citem">
+                        <div class="cicon">✉️</div>
+                        <div class="ctext">
+                            <strong>Email</strong>
+                            <span>info@fcgrantola.it</span>
+                        </div>
+                    </div>
+                    <div class="citem">
+                        <div class="cicon">📅</div>
+                        <div class="ctext">
+                            <strong>Allenamenti</strong>
+                            <span>Martedì e Giovedì, 17:00 – 19:00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="socials">
+                    <a href="#" class="soc-btn">📘 Facebook</a>
+                    <a href="#" class="soc-btn">📸 Instagram</a>
+                </div>
+            </div>
+
+            <div class="form-box reveal" style="transition-delay:.15s" id="formBox">
+                <h3>Manda un messaggio</h3>
+                <p>Ti risponderemo entro 24 ore. Nessun impegno.</p>
+                <!--
+                    FORM: usa FormSubmit (gratuito, no backend).
+                    Cambia l'azione con la vostra email reale:
+                    action="https://formsubmit.co/VOSTRA-EMAIL@dominio.it"
+                    Al primo invio arriverà una email di conferma per attivare il servizio.
+                -->
+                <form id="form" action="https://formsubmit.co/info@fcgrantola.it" method="POST">
+                    <input type="hidden" name="_subject" value="Nuovo contatto — FC Grantola">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_next" id="nextUrl" value="">
+                    <div class="row2">
+                        <div class="fg">
+                            <label for="nome">Nome genitore</label>
+                            <input type="text" id="nome" name="nome" placeholder="Mario" required>
+                        </div>
+                        <div class="fg">
+                            <label for="cognome">Cognome</label>
+                            <input type="text" id="cognome" name="cognome" placeholder="Rossi" required>
+                        </div>
+                    </div>
+                    <div class="row2">
+                        <div class="fg">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="mario@email.com" required>
+                        </div>
+                        <div class="fg">
+                            <label for="tel">Telefono</label>
+                            <input type="tel" id="tel" name="telefono" placeholder="+39 333 ...">
+                        </div>
+                    </div>
+                    <div class="fg">
+                        <label for="eta">Età del bambino/a</label>
+                        <select id="eta" name="eta_bambino">
+                            <option value="">Seleziona...</option>
+                            <option>5 – 6 anni (Piccoli Amici)</option>
+                            <option>7 – 8 anni (Pulcini)</option>
+                            <option>9 – 10 anni (Pulcini B)</option>
+                            <option>11 – 12 anni (Esordienti)</option>
+                            <option>13 – 14 anni (Giovanissimi)</option>
+                        </select>
+                    </div>
+                    <div class="fg">
+                        <label for="msg">Messaggio (opzionale)</label>
+                        <textarea id="msg" name="messaggio" placeholder="Scrivi qui domande o note…"></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit" id="submitBtn">Invia la richiesta →</button>
+                </form>
+                <div class="form-ok" id="formOk">
+                    <div class="ok-ico">🎉</div>
+                    <h4>Messaggio inviato!</h4>
+                    <p>Grazie per averci contattato. Ti risponderemo al più presto — ci vediamo al campo!</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+    <div class="f-logo">⚽ FC Grantola</div>
+    <p class="f-tag">Calcio, amicizia e valori — dal 2009</p>
+    <nav class="f-links">
+        <a href="#chi-siamo">Chi siamo</a>
+        <a href="#perche">Perché noi</a>
+        <a href="#gallery">Galleria</a>
+        <a href="#contatti">Contatti</a>
+    </nav>
+    <hr class="fdiv">
+    <p class="f-copy">© 2025 FC Grantola · Tutti i diritti riservati · C.F. 00000000000</p>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+    // --- Navigazione scrolled ---
+    const nav = document.getElementById('nav');
+    const burger = document.getElementById('burger');
+    const navLinks = document.getElementById('navLinks');
+
+    window.addEventListener('scroll', () => {
+        nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    burger.addEventListener('click', () => {
+        navLinks.classList.toggle('open');
+    });
+
+    navLinks.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => navLinks.classList.remove('open'));
+    });
+
+    // --- Slideshow ---
+    const track = document.getElementById('track');
+    const slides = track.querySelectorAll('.slide');
+    const dotsEl = document.getElementById('dots');
+    let cur = 0, timer;
+
+    slides.forEach((_, i) => {
+        const d = document.createElement('button');
+        d.className = 'dot' + (i === 0 ? ' on' : '');
+        d.setAttribute('aria-label', 'Foto ' + (i + 1));
+        d.addEventListener('click', () => { go(i); resetTimer(); });
+        dotsEl.appendChild(d);
+    });
+
+    function go(idx) {
+        cur = (idx + slides.length) % slides.length;
+        track.style.transform = 'translateX(-' + (cur * 100) + '%)';
+        dotsEl.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('on', i === cur));
+    }
+
+    function next() { go(cur + 1); }
+    function prev() { go(cur - 1); }
+
+    function resetTimer() {
+        clearInterval(timer);
+        timer = setInterval(next, 4800);
+    }
+
+    document.getElementById('nextBtn').addEventListener('click', () => { next(); resetTimer(); });
+    document.getElementById('prevBtn').addEventListener('click', () => { prev(); resetTimer(); });
+    resetTimer();
+
+    // swipe su mobile
+    let tx = 0;
+    const ss = document.getElementById('ss');
+    ss.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+    ss.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - tx;
+        if (Math.abs(dx) > 45) { dx < 0 ? next() : prev(); resetTimer(); }
+    });
+
+    // --- Scroll reveal ---
+    const revs = document.querySelectorAll('.reveal');
+    const ro = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('vis'); ro.unobserve(e.target); }
+        });
+    }, { threshold: 0.12 });
+    revs.forEach(r => ro.observe(r));
+
+    // --- Form: redirect con feedback ---
+    const form = document.getElementById('form');
+    const formOk = document.getElementById('formOk');
+    const nextUrl = document.getElementById('nextUrl');
+
+    // Imposta redirect dinamico alla stessa pagina con ?ok=1
+    nextUrl.value = location.href.split('?')[0] + '?ok=1#contatti';
+
+    if (location.search.includes('ok=1')) {
+        form.style.display = 'none';
+        formOk.style.display = 'block';
+    }
+
+    document.getElementById('submitBtn').addEventListener('click', function() {
+        if (form.checkValidity()) {
+            this.textContent = 'Invio in corso…';
+            this.disabled = true;
+        }
+    });
+</script>
+</body>
+</html>
